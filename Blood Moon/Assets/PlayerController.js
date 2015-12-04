@@ -12,11 +12,12 @@ function Start () {
 
 function FixedUpdate () {
 	ApplyGravity();
-	// ApplyRotation();
+	ApplyRotation();
 	
 	var moveVector : Vector2 = new Vector2(Input.GetAxis("Horizontal") * moveSpeed, 0);
 	
-	rigid.AddForce(moveVector);
+	if (rigid.velocity.magnitude < 10)
+		rigid.AddForce(transform.right * (Input.GetAxis("Horizontal") * moveSpeed));
 }
 
 function ApplyGravity () {
@@ -25,5 +26,7 @@ function ApplyGravity () {
 }
 
 function ApplyRotation () {
-	transform.rotation.z = 180 - Mathf.Asin(gravityPos.y / gravityPos.x);
+	var dx : float = moon.position.x - transform.position.x;
+	var dy : float = moon.position.y - transform.position.y;
+	transform.rotation.z = Mathf.Atan(dy/dx);
 }
